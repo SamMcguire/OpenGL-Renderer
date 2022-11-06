@@ -6,6 +6,27 @@
 #include<string>
 #include<sstream>
 
+#define ASSERT(x) if (!(x)) __debugbreak(); 
+#define GLCall(x) GLClearError();\
+    x;\
+    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+
+static void GLClearError()
+{
+    while (glGetError() != GL_NO_ERROR);
+}
+
+static bool GLLogCall(const char* function, const char* file, int line)
+{
+    //Willl loop until glGetError() is 0
+    while (GLenum error = glGetError())
+    {
+        std::cout << "[OpenGL Error] (" << error << "):"
+            << function << " " << file << ":" << line << std::endl;
+        return false;
+    }
+    return true;
+}
 
 struct ShaderProgramSource
 {
@@ -46,26 +67,26 @@ static ShaderProgramSource ParseShader(const std::string& filepath)
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
 {
-    unsigned int id = glCreateShader(type);
+    GLCall(unsigned int id = glCreateShader(type));
     //Below is just a pointer to null terminated immutable array
     //Same as doing source[0]
     const char* src = source.c_str();
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
+    GLCall(glShaderSource(id, 1, &src, nullptr));
+    GLCall(glCompileShader(id));
     
     //Error Handling
     int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    GLCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
     if (result == GL_FALSE)
     {
         int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
         //Same as doing message[length]. C++ cant allocate variable length to stack. 
         char* message = (char*)(alloca(length * sizeof(char)));
-        glGetShaderInfoLog(id, length, &length, message);
+        GLCall(glGetShaderInfoLog(id, length, &length, message));
         std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!" << std::endl;
         std::cout << message << std::endl;
-        glDeleteShader(id);
+        GLCall(glDeleteShader(id));
         return 0;
     }
 
@@ -76,17 +97,17 @@ static unsigned int CompileShader(unsigned int type, const std::string& source)
 //Static so other files can't access this func
 static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
-    unsigned int program_id = glCreateProgram();
+    GLCall(unsigned int program_id = glCreateProgram());
     unsigned int vs_id = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs_id = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-    glAttachShader(program_id, vs_id);
-    glAttachShader(program_id, fs_id);
-    glLinkProgram(program_id);
-    glValidateProgram(program_id);
+    GLCall(glAttachShader(program_id, vs_id));
+    GLCall(glAttachShader(program_id, fs_id));
+    GLCall(glLinkProgram(program_id));
+    GLCall(glValidateProgram(program_id));
 
-    glDeleteShader(vs_id);
-    glDeleteShader(fs_id);
+    GLCall(glDeleteShader(vs_id));
+    GLCall(glDeleteShader(fs_id));
 
     return program_id;
 }
@@ -130,36 +151,36 @@ int main()
 
     //Defining vertex buffers
     unsigned int buffer_id; //could just name buffer
-    glGenBuffers(1, &buffer_id); //1 is how many buffers. &(passes in pointer)
+    GLCall(glGenBuffers(1, &buffer_id)); //1 is how many buffers. &(passes in pointer)
     //Selecting buffer. GL_ARRAY_BUFFER is purpose of buffer.
-    glBindBuffer(GL_ARRAY_BUFFER, buffer_id);
-    glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), triangle_positions, GL_STATIC_DRAW);
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer_id));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), triangle_positions, GL_STATIC_DRAW));
 
     //Setting attributes
     //if 8 then do (const void*)8
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
-    glEnableVertexAttribArray(0);
+    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
+    GLCall(glEnableVertexAttribArray(0));
 
     //index buffer object
     unsigned int ibo_id; //could just name buffer
-    glGenBuffers(1, &ibo_id); //1 is how many buffers. &(passes in pointer)
+    GLCall(glGenBuffers(1, &ibo_id)); //1 is how many buffers. &(passes in pointer)
     //Selecting buffer. GL_ARRAY_BUFFER is purpose of buffer.
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
 
     ShaderProgramSource src = ParseShader("res/shaders/Basic.shader");
     unsigned int shader = CreateShader(src.VertexSource, src.FragmentSource);
-    glUseProgram(shader);
+    GLCall(glUseProgram(shader));
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
         //Issuing a draw call
         //nullptr because index buffer is bound
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
         //GLDrawArrays because we dont have an index buffer
         //glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -170,7 +191,7 @@ int main()
         glfwPollEvents();
     }
 
-    glDeleteProgram(shader);
+    GLCall(glDeleteProgram(shader));
 
     glfwTerminate();
     return 0;
