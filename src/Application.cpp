@@ -116,22 +116,36 @@ int main()
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    float triangle_positions[6] = {
+    float triangle_positions[8] = {
         -0.5f, -0.5f,
-        -0.0f, 0.5f,
-        0.5f, -0.5f
+        0.5f, -0.5f,
+        0.5f, 0.5f,
+        -0.5f, 0.5f
     };
+
+    unsigned int indices[] = {
+        0,1,2,
+        2,3,0
+    };
+
     //Defining vertex buffers
     unsigned int buffer_id; //could just name buffer
     glGenBuffers(1, &buffer_id); //1 is how many buffers. &(passes in pointer)
     //Selecting buffer. GL_ARRAY_BUFFER is purpose of buffer.
     glBindBuffer(GL_ARRAY_BUFFER, buffer_id);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), triangle_positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), triangle_positions, GL_STATIC_DRAW);
 
     //Setting attributes
     //if 8 then do (const void*)8
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
     glEnableVertexAttribArray(0);
+
+    //index buffer object
+    unsigned int ibo_id; //could just name buffer
+    glGenBuffers(1, &ibo_id); //1 is how many buffers. &(passes in pointer)
+    //Selecting buffer. GL_ARRAY_BUFFER is purpose of buffer.
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
     ShaderProgramSource src = ParseShader("res/shaders/Basic.shader");
     unsigned int shader = CreateShader(src.VertexSource, src.FragmentSource);
@@ -144,8 +158,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         //Issuing a draw call
+        //nullptr because index buffer is bound
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         //GLDrawArrays because we dont have an index buffer
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //glDrawArrays(GL_TRIANGLES, 0, 3);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
