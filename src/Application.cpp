@@ -132,7 +132,7 @@ int main()
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
-    glfwSwapInterval(1);
+    glfwSwapInterval(1); //Matches frame rate to refresh rate 
 
     if (glewInit() != GLEW_OK)
         return -1;
@@ -150,6 +150,10 @@ int main()
         0,1,2,
         2,3,0
     };
+
+    unsigned int vao_id;//Vertex array object
+    GLCall(glGenVertexArrays(1, &vao_id));
+    GLCall(glBindVertexArray(vao_id));
 
     //Defining vertex buffers
     unsigned int buffer_id; //could just name buffer
@@ -189,6 +193,8 @@ int main()
         //Issuing a draw call
         //nullptr because index buffer is bound
         GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+        GLCall(glBindVertexArray(vao_id));
+        GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id));
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
         //GLDrawArrays because we dont have an index buffer
         //glDrawArrays(GL_TRIANGLES, 0, 3);
