@@ -1,0 +1,5 @@
+Abstraction: 
+	-vertex buffers/ arrays
+	-Index buffers
+	-shaders
+	-renderer
