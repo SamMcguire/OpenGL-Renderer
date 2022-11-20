@@ -9,6 +9,7 @@
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
 #include "Shader.h"
+#include "Texture.h"
 
 int main()
 {
@@ -37,11 +38,12 @@ int main()
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     {
-        float positions[8] = {
-            -0.5f, -0.5f,
-            0.5f, -0.5f,
-            0.5f, 0.5f,
-            -0.5f, 0.5f
+        //pos_x, pos_y, tex_x, tex_y
+        float positions[16] = {
+            -0.5f, -0.5f, 0.0f, 0.0f,
+            0.5f, -0.5f, 1.0f, 0.0f,
+            0.5f, 0.5f, 1.0f, 1.0f,
+            -0.5f, 0.5f, 0.0f, 1.0f
         };
 
         unsigned int indices[] = {
@@ -49,11 +51,15 @@ int main()
             2,3,0
         };
 
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); GCE;
+        glEnable(GL_BLEND); GCE;
+
         //Defining vertex buffers
         VertexArray va;
-        VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+        VertexBuffer vb(positions, 4 * 4 * sizeof(float));
         //Setting vertex array layout(attributes)
         VertexBufferLayout layout;
+        layout.Push<float>(2);
         layout.Push<float>(2);
         va.AddBuffer(vb, layout);
 
@@ -61,10 +67,13 @@ int main()
         IndexBuffer ib(indices, 6);
 
 
-        Shader shader("res/shaders/Basic.shader");
+        Shader shader("res/shaders/Texture.shader");
         shader.Bind();
-
         shader.SetUniform4f("u_Colour", 0.2f, 0.3f, 0.8f, 1.0f);
+
+        Texture texture("res/textures/puppy.png");
+        texture.Bind();
+        shader.SetUniform1i("u_Texture", 0);//Value is texture slot
 
         Renderer renderer;
 
