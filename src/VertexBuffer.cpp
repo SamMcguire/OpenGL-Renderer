@@ -4,23 +4,23 @@
 
 VertexBuffer::VertexBuffer(const void* data, unsigned int size)
 {
-    GLCall(glGenBuffers(1, &m_RendererID)); //1 is how many buffers. &(passes in pointer)
+    glGenBuffers(1, &m_RendererID); GCE //1 is how many buffers. &(passes in pointer)
     //Selecting buffer. GL_ARRAY_BUFFER is purpose of buffer.
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
-    GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
+    glBindBuffer(GL_ARRAY_BUFFER, m_RendererID); GCE
+    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW); GCE
 }
 
 VertexBuffer::~VertexBuffer()
 {
-    GLCall(glDeleteBuffers(1, &m_RendererID));
+    glDeleteBuffers(1, &m_RendererID); GCE
 }
 
 void VertexBuffer::Bind() const
 {
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
+    glBindBuffer(GL_ARRAY_BUFFER, m_RendererID); GCE
 }
 
 void VertexBuffer::Unbind() const
 {
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    glBindBuffer(GL_ARRAY_BUFFER, 0); GCE
 }

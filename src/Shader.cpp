@@ -18,7 +18,7 @@ Shader::Shader(const std::string& filepath)
 
 Shader::~Shader()
 {
-    GLCall(glDeleteProgram(m_RendererID));
+    glDeleteProgram(m_RendererID); GCE
 }
 
 ShaderProgramSource Shader::ParseShader(const std::string& filepath)
@@ -53,26 +53,26 @@ ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 
 unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 {
-    GLCall(unsigned int id = glCreateShader(type));
+    unsigned int id = glCreateShader(type); GCE
     //Below is just a pointer to null terminated immutable array
     //Same as doing source[0]
     const char* src = source.c_str();
-    GLCall(glShaderSource(id, 1, &src, nullptr));
-    GLCall(glCompileShader(id));
+    glShaderSource(id, 1, &src, nullptr); GCE
+    glCompileShader(id); GCE
 
     //Error Handling
     int result;
-    GLCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result); GCE
     if (result == GL_FALSE)
     {
         int length;
-        GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length); GCE
         //Same as doing message[length]. C++ cant allocate variable length to stack. 
         char* message = (char*)(_malloca(length * sizeof(char)));
-        GLCall(glGetShaderInfoLog(id, length, &length, message));
+        glGetShaderInfoLog(id, length, &length, message); GCE
         std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!" << std::endl;
         std::cout << message << std::endl;
-        GLCall(glDeleteShader(id));
+        glDeleteShader(id); GCE
         return 0;
     }
 
@@ -82,17 +82,17 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 
 unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
-    GLCall(unsigned int program_id = glCreateProgram());
+    unsigned int program_id = glCreateProgram(); GCE
     unsigned int vs_id = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs_id = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-    GLCall(glAttachShader(program_id, vs_id));
-    GLCall(glAttachShader(program_id, fs_id));
-    GLCall(glLinkProgram(program_id));
-    GLCall(glValidateProgram(program_id));
+    glAttachShader(program_id, vs_id); GCE
+    glAttachShader(program_id, fs_id); GCE
+    glLinkProgram(program_id); GCE
+    glValidateProgram(program_id); GCE
 
-    GLCall(glDeleteShader(vs_id));
-    GLCall(glDeleteShader(fs_id));
+    glDeleteShader(vs_id); GCE
+    glDeleteShader(fs_id); GCE
 
     return program_id;
 }
@@ -100,17 +100,17 @@ unsigned int Shader::CreateShader(const std::string& vertexShader, const std::st
 
 void Shader::Bind() const
 {
-    GLCall(glUseProgram(m_RendererID));
+    glUseProgram(m_RendererID); GCE
 }
 
 void Shader::Unbind() const
 {
-    GLCall(glUseProgram(0));
+    glUseProgram(0); GCE
 }
 
 void Shader::SetUniform4f(const std::string& name, float f0, float f1, float f2, float f3)
 {
-    GLCall(glUniform4f(GetUniformLocation(name), f0, f1, f2, f3));
+    glUniform4f(GetUniformLocation(name), f0, f1, f2, f3); GCE
 }
 
 int Shader::GetUniformLocation(const std::string& name)
@@ -119,7 +119,7 @@ int Shader::GetUniformLocation(const std::string& name)
     if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
         return m_UniformLocationCache[name];
     //Otherwise find location
-    GLCall(unsigned int location = glGetUniformLocation(m_RendererID, name.c_str()));
+    unsigned int location = glGetUniformLocation(m_RendererID, name.c_str()); GCE
     if (location == -1)
         std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
  

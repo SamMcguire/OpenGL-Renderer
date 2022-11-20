@@ -5,22 +5,22 @@
 
 VertexArray::VertexArray()
 {
-	GLCall(glGenVertexArrays(1, &m_RendererID));
+	glGenVertexArrays(1, &m_RendererID); GCE
 }
 
 VertexArray::~VertexArray()
 {
-	GLCall(glDeleteVertexArrays(1, &m_RendererID));
+	glDeleteVertexArrays(1, &m_RendererID); GCE
 }
 
 void VertexArray::Bind() const
 {
-	GLCall(glBindVertexArray(m_RendererID));
+	glBindVertexArray(m_RendererID); GCE
 }
 
 void VertexArray::Unbind() const
 {
-	GLCall(glBindVertexArray(0));
+	glBindVertexArray(0); GCE
 }
 
 void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
@@ -32,8 +32,8 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	for (unsigned int i = 0; i < elements.size(); i++)
 	{
 		const auto& element = elements[i];
-		GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalised, layout.GetStride(), (const void*)offset));
-		GLCall(glEnableVertexAttribArray(i));
+		glVertexAttribPointer(i, element.count, element.type, element.normalised, layout.GetStride(), (const void*)offset); GCE
+		glEnableVertexAttribArray(i); GCE
 		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
 	}
 }

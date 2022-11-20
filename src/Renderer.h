@@ -6,15 +6,19 @@
 #include "Shader.h"
 
 
-#define ASSERT(x) if (!(x)) __debugbreak(); 
-#define GLCall(x) GLClearError();\
-    x;\
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+void GLCheckError(const char* function, const char* file, int line);
 
-//Clears all previous GL Errors
-void GLClearError();
-//Logs and clears all current GL Errors
-bool GLLogCall(const char* function, const char* file, int line);
+#ifdef DEBUG
+#define CHECK_GL_ERRORS
+#endif
+
+#ifdef CHECK_GL_ERRORS
+    #define GCE GLCheckError(__FUNCTION__, __FILE__, __LINE__);
+#else
+    #define GCE
+#endif // CHECK_GL_ERRORS
+
+#define ASSERT(x) if (!(x)) __debugbreak(); 
 
 class Renderer
 {
