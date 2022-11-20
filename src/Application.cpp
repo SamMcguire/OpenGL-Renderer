@@ -10,7 +10,18 @@
 #include "VertexBufferLayout.h"
 #include "Shader.h"
 
+/*
+#ifdef DEBUG
+#define TEST_THING
+#endif
+void tester()
+{
+    #ifdef TEST_THING
+    std::cout << "test\n\n\n\n";
+    #endif // TEST_THING
 
+}
+*/
 
 int main()
 {

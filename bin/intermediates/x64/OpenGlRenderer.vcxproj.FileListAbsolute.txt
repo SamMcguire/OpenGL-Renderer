@@ -1,2 +1,0 @@
-C:\Users\sammc\Coding\C++\22\TheCherno\OpenGL\OpenGL-Renderer\bin\x64\OpenGlRenderer.exe.lastcodeanalysissucceeded
-C:\Users\sammc\Coding\C++\22\TheCherno\OpenGL\OpenGL-Renderer\bin\intermediates\x64\NativeCodeAnalysis.read.1.tlog
