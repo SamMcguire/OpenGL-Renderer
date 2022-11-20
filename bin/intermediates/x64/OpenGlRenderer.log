@@ -1,5 +1,11 @@
 ﻿  Shader.cpp
+  IndexBuffer.cpp
+  Renderer.cpp
   Application.cpp
+  VertexBuffer.cpp
+  VertexArray.cpp
+C:\Users\sammc\Coding\C++\22\TheCherno\OpenGL\OpenGL-Renderer\src\VertexArray.cpp(35,3): warning C4312: 'type cast': conversion from 'unsigned int' to 'const void *' of greater size
+  Running Code Analysis for C/C++...
   Generating Code...
 glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\sammc\Coding\C++\22\TheCherno\OpenGL\OpenGL-Renderer\bin\x64\vc120.pdb'; linking object as if no debug info
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library

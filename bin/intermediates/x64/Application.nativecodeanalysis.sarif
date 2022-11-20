@@ -1,0 +1,99 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31629.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///c:/users/sammc/coding/c++/22/thecherno/opengl/opengl-renderer/src/application.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "73f4a172d2009ecb4ba7293602d0a05296133f3ce97d4cda78554e480c55d0c3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/sammc/coding/c++/22/thecherno/opengl/opengl-renderer/dependencies/glew/include/gl/glew.h"
+          },
+          "hashes": {
+            "sha-256": "1a2d50dc00a69940838cb3b5413cf7a7ac3cee8078672f27ffbfa2d3b88ad344"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/sammc/coding/c++/22/thecherno/opengl/opengl-renderer/dependencies/glfw/include/glfw/glfw3.h"
+          },
+          "hashes": {
+            "sha-256": "0992a30f01ebaa41c32f3f0588e942961abb8a9a52ca8764bd32ee4d7d71a46d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/sammc/coding/c++/22/thecherno/opengl/opengl-renderer/src/renderer.h"
+          },
+          "hashes": {
+            "sha-256": "110bbb196fc2975d2b23efa3dfa8d01510374ceddf427cb4ee56e18c587dae05"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/sammc/coding/c++/22/thecherno/opengl/opengl-renderer/src/indexbuffer.h"
+          },
+          "hashes": {
+            "sha-256": "7e3a01ef0c2d2498e7d2b58c7ad9448cbaf9b25acf4483561bd3917fb2c8357c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/sammc/coding/c++/22/thecherno/opengl/opengl-renderer/src/vertexarray.h"
+          },
+          "hashes": {
+            "sha-256": "b6a033382317e4b5cf18c8a764edcf706312a3b64def7b52937ab3c0224571e1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/sammc/coding/c++/22/thecherno/opengl/opengl-renderer/src/vertexbuffer.h"
+          },
+          "hashes": {
+            "sha-256": "c455361969be46c504356d3a1448474c17df7a16d6fdaa73cdb929dd4f996a73"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/sammc/coding/c++/22/thecherno/opengl/opengl-renderer/src/shader.h"
+          },
+          "hashes": {
+            "sha-256": "4d5a3dcb9253cba3aeea89cd232a1da373b1d35603bbcdeb552f0e1359222386"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/sammc/coding/c++/22/thecherno/opengl/opengl-renderer/src/vertexbufferlayout.h"
+          },
+          "hashes": {
+            "sha-256": "1f4b1c42942522f52e75c4f0e316e2df9e1df1af6011504cbef2e4512f9b5eda"
+          }
+        }
+      ]
+    }
+  ]
+}

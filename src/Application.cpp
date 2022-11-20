@@ -2,14 +2,12 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
-#include <fstream>
-#include<string>
-#include<sstream>
 
 #include "Renderer.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"  
 #include "VertexArray.h"
+#include "VertexBufferLayout.h"
 #include "Shader.h"
 
 
@@ -70,20 +68,21 @@ int main()
 
         shader.SetUniform4f("u_Colour", 0.2f, 0.3f, 0.8f, 1.0f);
 
+        Renderer renderer;
+
         float r = 0.0f;
         float increment = 0.05f;
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
             /* Render here */
-            GLCall(glClear(GL_COLOR_BUFFER_BIT));
+            renderer.Clear();
 
             //Issuing a draw call
             //nullptr because index buffer is bound
+            shader.Bind();
             shader.SetUniform4f("u_Colour", r, 0.3f, 0.8f, 1.0f);
-            va.Bind();
-            ib.Bind();
-            GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+            renderer.Draw(va, ib, shader);
             //GLDrawArrays because we dont have an index buffer
             //glDrawArrays(GL_TRIANGLES, 0, 3);
 
