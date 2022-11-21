@@ -70,7 +70,7 @@ int main()
         Shader shader("res/shaders/Texture.shader");
         shader.Bind();
         shader.SetUniform4f("u_Colour", 0.2f, 0.3f, 0.8f, 1.0f);
-
+        std::cout << "test";
         Texture texture("res/textures/puppy.png");
         texture.Bind();
         shader.SetUniform1i("u_Texture", 0);//Value is texture slot
