@@ -11,6 +11,8 @@
 #include "Shader.h"
 #include "Texture.h"
 
+#include <Eigen/Core>
+
 int main()
 {
     GLFWwindow* window;
@@ -20,7 +22,8 @@ int main()
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Coolest Tab", NULL, NULL);
+    //window = glfwCreateWindow(640, 480, "Coolest Tab", NULL, NULL);
+    window = glfwCreateWindow(1500, 500, "Coolest Tab", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -66,13 +69,12 @@ int main()
         //index buffer object
         IndexBuffer ib(indices, 6);
 
+        Texture texture("res/textures/puppy.png");
+        texture.Bind();
 
         Shader shader("res/shaders/Texture.shader");
         shader.Bind();
-        shader.SetUniform4f("u_Colour", 0.2f, 0.3f, 0.8f, 1.0f);
-        std::cout << "test";
-        Texture texture("res/textures/puppy.png");
-        texture.Bind();
+        shader.SetUniform4f("u_Colour", 0.2f, 0.3f, 0.8f, 1.0f);   
         shader.SetUniform1i("u_Texture", 0);//Value is texture slot
 
         Renderer renderer;
