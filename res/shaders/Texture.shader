@@ -17,25 +17,25 @@ void main()
 #shader fragment
 #version 330 core
 
-layout(location = 0) out vec4 colour;
+layout(location = 0) out vec4 color;
 
 in vec2 v_TexCoord;
 
-uniform vec4 u_Colour;
+uniform vec4 u_Color;
 uniform sampler2D u_Texture;
 
 void main()
 {
-	vec4 texColour = texture(u_Texture, v_TexCoord);
-	colour = texColour;
-	colour = 0.5 * (texColour + u_Colour);
-	colour[3] = texColour[3];
+	vec4 texColor = texture(u_Texture, v_TexCoord);
+	color = texColor;
+	color = 0.5 * (texColor + u_Color);
+	color[3] = texColor[3];
 	//if(texColor[3]>0.001f)
 	//{
-	//	colour = 0.5 * (texColor + u_Colour);
+	//	color = 0.5 * (texColor + u_Color);
 	//}
 	//else
 	//{
-	//	colour = texColor;
+	//	color = texColor;
 	//}
 };
