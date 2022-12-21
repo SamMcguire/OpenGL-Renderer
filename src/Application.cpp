@@ -36,7 +36,7 @@ int main()
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
-    //glfwSwapInterval(1); //Matches frame rate to refresh rate 
+    glfwSwapInterval(1); //Matches frame rate to refresh rate 
 
     if (glewInit() != GLEW_OK)
         return -1;
@@ -89,21 +89,10 @@ int main()
         shader.Bind();
         shader.SetUniform4f("u_Colour", 0.2f, 0.3f, 0.8f, 1.0f);   
         shader.SetUniform1i("u_Texture", 0);//Value is texture slot
-        
-        float a = 0.7071;
 
         sam::mat4f move;
-        move << 1, 0, 0, 400,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1;
-
-        std::cout << ortho << "\n\n\n" << std::endl;
-        sam::mat4f result = ortho; //* move;
-        std::cout << result << std::endl;
-
-
-        shader.SetUniformMat4f("u_MVP", result);
+        float translation = 0.0f;
+        
         //Need to fix it so can do below
         //shader.SetUniformMat4f("u_MVP", rotation * ortho);
 
@@ -141,10 +130,19 @@ int main()
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
+            move << 1, 0, 0, translation,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1;
+
+            sam::mat4f result = ortho * move; //* move;
+
+
             //Issuing a draw call
             //nullptr because index buffer is bound
             shader.Bind();
             shader.SetUniform4f("u_Colour", 0.3f, r, 0.8f, 1.0f); //img_col[0], img_col[1], img_col[2], img_col[3]);
+            shader.SetUniformMat4f("u_MVP", result);
             renderer.Draw(va, ib, shader);
             //GLDrawArrays because we dont have an index buffer
             //glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -154,13 +152,9 @@ int main()
             else if (r < 0.0f)
                 increment = 0.05f;
             r += increment;
-            // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-            if (show_demo_window)
-                ImGui::ShowDemoWindow(&show_demo_window);
 
             // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
             {
-                static float f = 0.0f;
                 static int counter = 0;
 
                 ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
@@ -169,7 +163,7 @@ int main()
                 ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
                 ImGui::Checkbox("Another Window", &show_another_window);
 
-                ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+                ImGui::SliderFloat("float", &translation, -800.0f, 800.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
                 ImGui::ColorEdit3("clear color", (float*)&img_col); // Edit 3 floats representing a color
 
                 if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
