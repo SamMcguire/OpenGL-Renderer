@@ -17,6 +17,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "tests/TestClearColor.h"
+#include "tests/TestTexture.h"
 
 int main()
 {
@@ -54,7 +55,7 @@ int main()
 		ImGui_ImplOpenGL3_Init("#version 330");
 		io.Fonts->AddFontDefault();
 
-		test::TestClearColor test;
+		test::TestTexture test;
 
 		while (!glfwWindowShouldClose(window))
 		{

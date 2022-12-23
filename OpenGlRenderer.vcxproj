@@ -23,6 +23,7 @@
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\tests\TestTexture.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\tests\test.h" />
+    <ClInclude Include="src\tests\TestTexture.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\vendor\Eigen\src\Cholesky\LDLT.h" />
     <ClInclude Include="src\vendor\Eigen\src\Cholesky\LLT.h" />
